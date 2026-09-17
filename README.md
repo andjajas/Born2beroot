@@ -68,14 +68,14 @@ I used VirtualBox, since it's available and works reliably on the machine I used
 
 The disk was partitioned using LVM on top of a LUKS-encrypted physical partition, following the bonus structure (splitting beyond the mandatory minimum of 2 encrypted partitions):
 
-/boot        476M       — unencrypted, required for bootloader access before decryption
-/            9.31G          (root)
-swap         2.14G
-/home        4.66G
-/var         2.79G
-/srv         2.79G
-/tmp         2.79G
-/var/log     3.72G
+/boot        476M       — unencrypted, required for bootloader access before decryption<br>
+/            9.31G          (root)<br>
+swap         2.14G<br>
+/home        4.66G<br>
+/var         2.79G<br>
+/srv         2.79G<br>
+/tmp         2.79G<br>
+/var/log     3.72G<br>
 
 When setting up the partitions size values were assigned with the numbers shown in the example.
 Small amounts get consumed by LUKS/LVM overhead before the actual logical volume was created. This is why the numbers deviate slightly from the subject example, this is normal, expected overhead cost. As stated in the subject: "The example shows arbitrary disk sizes. You need to determine the appropriate size for each partition to ensure proper operation while avoiding unnecessary disk usage.".
@@ -89,6 +89,50 @@ Small amounts get consumed by LUKS/LVM overhead before the actual logical volume
 
 # INSTRUCTIONS
 
+Useful commands:
+
+su
+passwd
+
+sudo ufw status verbose
+sudo systemctl status ufw
+
+sudo ss -tunlp | grep ssh
+sudo systemctl status ssh
+
+head -n 2 /etc/os-release # or: less /etc/os-release
+
+whoami
+who
+awk -F: '$3 >= 1000 {print $1}' /etc/passwd
+
+getent group sudo
+getent group user42
+groups
+
+sudo less /etc/login.defs
+sudo cat /etc/pam.d/common-password
+
+sudo adduser <newusername>
+sudo addgroup <newgroupname>
+sudo adduser <username> <newgroupname>
+
+hostnamectl
+sudo hostnamectl set-hostname <newhostname>
+hostname
+cat /etc/hosts
+
+lsblk
+sudo lvs
+df -h
+
+dpkg -l | grep sudo
+which sudo
+sudo -V
+sudo adduser <username> sudo
+sudo ls -la /var/log/sudo
+sudo cat /var/log/sudo/sudo_log
+
 To get the physical number of cores (=Sockets), you cannot actually test it inside the VM,
 but outside it (and only on the computers which have a different number of virtual cores than the physical core only the computers on floor 1 inner circle (12 physical cores and 20 virtual cores outside the VM)
 all other computers have 4 physical cores and 4 virtual cores, so it won't distinguish) with:
@@ -98,7 +142,7 @@ lscpu -p | grep -v '#' | sort -u -t, -k3,3 | wc -l
 
 # RESOURCES
 
-My peers at Codam: vcoevert, olistokes, alkhan
+My peers at Codam: vcoevert, olistokes, alkhan, yuhma
 
 [why number of physical processors is the number of physical sockets](https://docs.edisglobal.com/faq/upgrades-downgrades/cpu-cores-vs-cpu-sockets-in-vps-environments/understanding-cpu-cores-vs-sockets-in-vps)<br>
 [lscpu](https://www.geeksforgeeks.org/linux-unix/gathering-system-information-using-commands-like-lscpu-lspci-and-lsblk/)
